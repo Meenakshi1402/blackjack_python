@@ -1,0 +1,16 @@
+# Python caches
+__pycache__/
+pycache_/
+*.pyc
+.pyc
+
+# Virtual environments
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# Project-specific files to exclude
+Blackjack_python_code_explaination.docx
+C++_Code/
