@@ -17,7 +17,7 @@ def main() -> None:
     # Run 50 rounds of 2000000  games each
     ngames = 2000000
     nrounds = 50
-    seed = 45
+    seed = 43
     
     print("50 rounds of 2000000 games")
     print("pl hands     wins      blackjack charlies  loses     breaks    dealerbjs pushes")
