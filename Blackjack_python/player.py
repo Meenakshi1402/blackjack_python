@@ -35,6 +35,7 @@ class Player:
 
     def hit(self, handno: Optional[int] = None):
         # Hit either the last hand or a specific hand index
+        # Handno means “hand number” (index) in the player’s list of hands.
         assert self.size > 0
         if handno is None:
             handno = self.size - 1

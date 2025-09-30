@@ -25,19 +25,16 @@ PUSHES = 6
 
 @dataclass
 class Game:
-    # Aggregated statistics for many simulated games
     count: List[int]
     nohands: int
     pl: float
 
 
 def Game_() -> Game:
-    # Zero-initialize the statistics structure
     return Game([0, 0, 0, 0, 0, 0, 0], 0, 0.0)
 
 
 def start(strategy: Strategy, ngames: int, seed: int) -> Game:
-    # Run ngames simulations using the provided strategy and seed
     rng_seed(seed)
     statistics = Game_()
     for _ in range(ngames):
@@ -46,7 +43,6 @@ def start(strategy: Strategy, ngames: int, seed: int) -> Game:
 
 
 def _get_play(hand: Hand, upcard: Card, strategy: Strategy) -> int:
-    # Choose which strategy table to consult based on the hand type
     if hand.is_pair():
         return doSection4(hand, upcard, strategy)
     elif hand.is_ace_plus_x():
@@ -58,7 +54,6 @@ def _get_play(hand: Hand, upcard: Card, strategy: Strategy) -> int:
 
 
 def play(strategy: Strategy, statistics: Game) -> None:
-    # Simulate one round: deal, play player(s), play dealer, settle
     player = Player(strategy=strategy)
     dealer = Hand()
 
@@ -76,13 +71,11 @@ def play(strategy: Strategy, statistics: Game) -> None:
 
 
 def _play_player(player: Player, upcard: Card, strategy: Strategy) -> None:
-    # Play through the player's first hand (and any splits)
     hand = player.hands[0]
     _playout(hand, upcard, player, strategy)
 
 
 def _playout(hand: Hand, upcard: Card, player: Player, strategy: Strategy) -> None:
-    # Recursively play a hand until it stays, busts, doubles, or splits
     assert not hand.is_broke()
     assert hand.bet != 0
     play_move = _get_play(hand, upcard, strategy)
@@ -107,7 +100,6 @@ def _playout(hand: Hand, upcard: Card, player: Player, strategy: Strategy) -> No
 
 
 def _split(hand1: Hand, upcard: Card, player: Player, strategy: Strategy) -> None:
-    # Handle splitting into two hands and then play through them if allowed
     assert len(hand1.cards) == 2
     if player.size >= MAX_YOUR_HANDS:
         _splitbackup(hand1, upcard, player, strategy)
@@ -135,7 +127,6 @@ def _split(hand1: Hand, upcard: Card, player: Player, strategy: Strategy) -> Non
 
 
 def _splitbackup(hand: Hand, upcard: Card, player: Player, strategy: Strategy) -> None:
-    # When we can't split further, fall back to total-based sections
     if hand.value >= 12:
         move = doSection1(hand, upcard, strategy)
     else:
@@ -154,7 +145,6 @@ def _splitbackup(hand: Hand, upcard: Card, player: Player, strategy: Strategy) -
 
 
 def _play_dealer_and_settle(dealer: Hand, player: Player, statistics: Game) -> None:
-    # Finish the dealer's hand (stand on 17) and settle all player hands
     remaining = player.size
     for hand in player.hands:
         assert hand.bet > 0
